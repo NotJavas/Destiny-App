@@ -1,13 +1,5 @@
 package com.example.destinyapp.ui.navigation
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ContentTransform
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -30,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -38,6 +29,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.destinyapp.ui.components.DestinyBottomBar
 import com.example.destinyapp.ui.screens.login.LoginScreen
+import com.example.destinyapp.ui.screens.profile.ProfileScreen
 import com.example.destinyapp.ui.screens.register.RegisterScreen
 import com.example.destinyapp.ui.screens.welcome.WelcomeScreen
 
@@ -122,12 +114,29 @@ fun DestinyNavHost() {
                 )
             }
 
-            // MAIN SCREENS CON ANIMACIÓN DE CARRUSEL SUTÍL
-            composable(Screen.Home.route) { PlaceholderScreen("Explorar Destinos") }
-            composable(Screen.Events.route) { PlaceholderScreen("Eventos Próximos") }
-            composable(Screen.Map.route) { PlaceholderScreen("Mapa Interactivo") }
-            composable(Screen.Notifications.route) { PlaceholderScreen("Notificaciones") }
-            composable(Screen.Profile.route) { PlaceholderScreen("Ajustes de Perfil") }
+            // MAIN SCREENS
+            composable(Screen.Home.route) {
+                PlaceholderScreen("Explorar Destinos")
+            }
+            composable(Screen.Events.route) {
+                PlaceholderScreen("Eventos Próximos")
+            }
+            composable(Screen.Map.route) {
+                PlaceholderScreen("Mapa Interactivo")
+            }
+            composable(Screen.Notifications.route) {
+                PlaceholderScreen("Notificaciones")
+            }
+            
+            composable(Screen.Profile.route) { 
+                ProfileScreen(
+                    onLogout = {
+                        navController.navigate(Screen.Welcome.route) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    }
+                )
+            }
         }
     }
 }

@@ -3,12 +3,10 @@ package com.example.destinyapp.ui.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.LocalFireDepartment
-import androidx.compose.material.icons.filled.Place
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,9 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.destinyapp.ui.resources.*
 import com.example.destinyapp.ui.theme.DestinyAppTheme
 
@@ -274,6 +274,102 @@ fun DestinyStatusCard(
     }
 }
 
+/**
+ * 4. PROFILE CARD
+ * Tarjeta para mostrar la información del usuario en su perfil.
+ */
+@Composable
+fun DestinyProfileCard(
+    name: String,
+    email: String,
+    modifier: Modifier = Modifier,
+    level: String = "Explorer Pro",
+    points: String = "2,450 pts"
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        shape = RoundedCornerShape(24.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+    ) {
+        Column(
+            modifier = Modifier.padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Avatar Placeholder con Gradiente
+            Box(
+                modifier = Modifier
+                    .size(80.dp)
+                    .background(
+                        Brush.linearGradient(listOf(DestinyPurple, DestinyBlue)),
+                        CircleShape
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = name.take(1).uppercase(),
+                    color = Color.White,
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = name,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Black,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+
+            Text(
+                text = email,
+                style = MaterialTheme.typography.bodyMedium,
+                color = DestinyNeutral600
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Stats Row
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "Nivel",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = DestinyNeutral600
+                    )
+                    Text(
+                        text = level,
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = DestinyPurple
+                    )
+                }
+                
+                Divider(modifier = Modifier.height(40.dp).width(1.dp), color = MaterialTheme.colorScheme.outline)
+
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "Puntos",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = DestinyNeutral600
+                    )
+                    Text(
+                        text = points,
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+        }
+    }
+}
+
 @Preview(showBackground = true, backgroundColor = 0xFF181818)
 @Composable
 fun CardsPreview() {
@@ -285,6 +381,11 @@ fun CardsPreview() {
                 .background(MaterialTheme.colorScheme.background),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
+            DestinyProfileCard(
+                name = "Javier Castro",
+                email = "javier@destiny.com"
+            )
+
             DestinyHeroCard(
                 title = "Neon Nights Festival",
                 description = "La fiesta electrónica más grande del año. DJs internacionales y show de luces."
@@ -295,13 +396,6 @@ fun CardsPreview() {
                 category = "Rooftop Bar",
                 rating = "4.8",
                 distance = "A 1.2 km de ti"
-            )
-
-            DestinyStatusCard(
-                title = "Zona en Tendencia",
-                subtitle = "Actividad inusual detectada",
-                progress = 0.85f,
-                footerText = "El tráfico de personas ha aumentado un 40% en la última hora."
             )
         }
     }
