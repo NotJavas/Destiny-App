@@ -17,7 +17,7 @@ private val DarkColorScheme = darkColorScheme(
     primary = DestinyPurple,
     secondary = DestinyBlue,
     tertiary = DestinyOrange,
-    background = DestinyDarkGrey,
+    background = Color.Black, // Forzado a negro puro para "Black Theme"
     surface = DestinyDarkGrey,
     onBackground = Color.White,
     onSurface = Color.White,
@@ -27,35 +27,14 @@ private val DarkColorScheme = darkColorScheme(
     onSurfaceVariant = DestinyNeutral400
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = DestinyPurple,
-    secondary = DestinyBlue,
-    tertiary = DestinyOrange,
-    background = Color.White,
-    surface = Color.White,
-    onBackground = DestinyNeutral900,
-    onSurface = DestinyNeutral900,
-    error = DestinyRed,
-    outline = DestinyNeutral200,
-    surfaceVariant = DestinyNeutral200,
-    onSurfaceVariant = DestinyNeutral600
-)
-
 @Composable
 fun DestinyAppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false, // Desactivamos DynamicColor para mantener la identidad visual de Destiny
+    darkTheme: Boolean = true, // Forzamos a true por defecto
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+    // Forzamos siempre el uso de DarkColorScheme para cumplir con el requisito de "only black theme"
+    val colorScheme = DarkColorScheme
 
     MaterialTheme(
         colorScheme = colorScheme,
