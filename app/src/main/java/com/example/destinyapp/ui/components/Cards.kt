@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.clickable
 import com.example.destinyapp.ui.resources.*
 import com.example.destinyapp.ui.theme.DestinyAppTheme
 
@@ -370,6 +371,230 @@ fun DestinyProfileCard(
     }
 }
 
+/**
+ * 5. NOTIFICATION CARD
+ */
+@Composable
+fun DestinyNotificationCard(
+    title: String,
+    message: String,
+    time: String,
+    icon: ImageVector,
+    modifier: Modifier = Modifier,
+    isUnread: Boolean = false,
+    onClick: () -> Unit = {}
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = if (isUnread) MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f) 
+                            else MaterialTheme.colorScheme.surface
+        ),
+        shape = RoundedCornerShape(16.dp),
+        border = BorderStroke(1.dp, if (isUnread) DestinyPurple.copy(alpha = 0.5f) else MaterialTheme.colorScheme.outline)
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Surface(
+                modifier = Modifier.size(48.dp),
+                shape = CircleShape,
+                color = if (isUnread) DestinyPurple.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surfaceVariant,
+                border = if (isUnread) BorderStroke(1.dp, DestinyPurple.copy(alpha = 0.4f)) else null
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = if (isUnread) DestinyPurple else MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = if (isUnread) FontWeight.Bold else FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        text = time,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = DestinyNeutral600
+                    )
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = message,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2
+                )
+            }
+
+            if (isUnread) {
+                Spacer(modifier = Modifier.width(8.dp))
+                Box(
+                    modifier = Modifier
+                        .size(8.dp)
+                        .background(DestinyPurple, CircleShape)
+                )
+            }
+        }
+    }
+}
+
+/**
+ * 6. DETAILED EVENT CARD
+ * Tarjeta más detallada para la pantalla de Eventos.
+ */
+@Composable
+fun DestinyDetailedEventCard(
+    title: String,
+    category: String,
+    tags: List<String>,
+    date: String,
+    location: String,
+    price: String,
+    modifier: Modifier = Modifier,
+    onActionClick: () -> Unit = {}
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        shape = RoundedCornerShape(20.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+    ) {
+        Column {
+            // Header Image Area
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(160.dp)
+                    .background(
+                        Brush.verticalGradient(
+                            listOf(DestinyPurple.copy(alpha = 0.3f), DestinyBlue.copy(alpha = 0.1f))
+                        )
+                    )
+            ) {
+                Surface(
+                    modifier = Modifier.padding(16.dp).align(Alignment.TopStart),
+                    color = DestinyGlassBlack,
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(
+                        text = category,
+                        color = Color.White,
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
+                    )
+                }
+            }
+
+            Column(modifier = Modifier.padding(20.dp)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Black,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Tags Row
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    tags.forEach { tag ->
+                        Surface(
+                            color = MaterialTheme.colorScheme.surfaceVariant,
+                            shape = RoundedCornerShape(6.dp)
+                        ) {
+                            Text(
+                                text = tag,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // Detail Items
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    DetailItem(icon = Icons.Default.CalendarToday, text = date, modifier = Modifier.weight(1f))
+                    DetailItem(icon = Icons.Default.Place, text = location, modifier = Modifier.weight(1f))
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text(
+                            text = "Desde",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = DestinyNeutral600
+                        )
+                        Text(
+                            text = price,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = DestinyPurple
+                        )
+                    }
+                    DestinyGradientButton(
+                        text = "Boletos",
+                        onClick = onActionClick,
+                        modifier = Modifier.width(120.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DetailItem(icon: ImageVector, text: String, modifier: Modifier = Modifier) {
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = DestinyPurple,
+            modifier = Modifier.size(16.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = text,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1
+        )
+    }
+}
+
 @Preview(showBackground = true, backgroundColor = 0xFF181818)
 @Composable
 fun CardsPreview() {
@@ -381,21 +606,21 @@ fun CardsPreview() {
                 .background(MaterialTheme.colorScheme.background),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            DestinyProfileCard(
-                name = "Javier Castro",
-                email = "javier@destiny.com"
-            )
-
-            DestinyHeroCard(
+            DestinyDetailedEventCard(
                 title = "Neon Nights Festival",
-                description = "La fiesta electrónica más grande del año. DJs internacionales y show de luces."
+                category = "Música Electrónica",
+                tags = listOf("Techno", "Outdoor", "Premium"),
+                date = "24 Oct, 2024",
+                location = "Querétaro, Qro.",
+                price = "$450 MXN"
             )
 
-            DestinyPlaceCard(
-                name = "Sky Bar Polanco",
-                category = "Rooftop Bar",
-                rating = "4.8",
-                distance = "A 1.2 km de ti"
+            DestinyNotificationCard(
+                title = "¡Nuevo evento cerca!",
+                message = "El Neon Nights Festival comienza en 2 horas en Plaza Querétaro.",
+                time = "Hace 5 min",
+                icon = Icons.Default.NotificationsActive,
+                isUnread = true
             )
         }
     }
