@@ -173,20 +173,20 @@ fun ProfileScreen(
                     Spacer(Modifier.width(8.dp))
                     Text("Cerrar Sesión")
                 }
-            }
-        }
 
-        // Botón Flotante de Guardar (Visual)
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(24.dp)
-        ) {
-            DestinyGradientButton(
-                text = "Guardar Cambios",
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { viewModel.saveProfile() }
-            )
+                // Botón Flotante de Guardar (Visual)
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(24.dp)
+                ) {
+                    DestinyGradientButton(
+                        text = "Guardar Cambios",
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = { viewModel.saveProfile() }
+                    )
+                }
+            }
         }
     }
 }

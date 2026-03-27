@@ -33,6 +33,7 @@ fun DestinyHeroCard(
     description: String,
     modifier: Modifier = Modifier,
     tag: String = "Trending",
+    customGradient: Brush? = null,
     onActionClick: () -> Unit = {}
 ) {
     Card(
@@ -46,7 +47,7 @@ fun DestinyHeroCard(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    Brush.verticalGradient(
+                    customGradient ?: Brush.verticalGradient(
                         colors = listOf(
                             DestinyPurple.copy(alpha = 0.7f),
                             MaterialTheme.colorScheme.surface

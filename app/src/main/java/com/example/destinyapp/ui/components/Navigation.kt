@@ -18,13 +18,16 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.destinyapp.ui.navigation.Screen
 import com.example.destinyapp.ui.resources.*
+import com.example.destinyapp.ui.theme.DestinyAppTheme
 
 /**
  * BARRA DE NAVEGACIÓN CON GLASSMORPHISM REAL
@@ -52,9 +55,9 @@ fun DestinyBottomBar(navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .clip(RoundedCornerShape(24.dp))
+                .clip(RoundedCornerShape(48.dp))
                 .background(DestinyGlassBlack.copy(alpha = 0.8f))
-                .border(1.dp, DestinyGlassBorder, RoundedCornerShape(24.dp))
+                .border(1.dp, DestinyGlassBorder, RoundedCornerShape(48.dp))
                 .blur(10.dp) // Nota: El blur real en Compose es experimental/Android 12+
         )
 
@@ -128,4 +131,20 @@ fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier {
             onClick = onClick
         )
     )
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF121212)
+@Composable
+fun DestinyBottomBarPreview() {
+    val navController = rememberNavController()
+    DestinyAppTheme {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            DestinyBottomBar(navController = navController)
+        }
+    }
 }

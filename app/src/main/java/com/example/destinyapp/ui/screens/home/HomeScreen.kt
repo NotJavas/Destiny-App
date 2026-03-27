@@ -46,6 +46,7 @@ fun HomeScreen(
                 title = event.title,
                 description = event.description,
                 tag = event.tag,
+                customGradient = event.customGradient,
                 onActionClick = { onEventClick(event.id) }
             )
         }

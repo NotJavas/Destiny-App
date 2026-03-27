@@ -26,6 +26,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -41,6 +43,7 @@ import com.example.destinyapp.ui.screens.notifications.NotificationsScreen
 import com.example.destinyapp.ui.screens.profile.ProfileScreen
 import com.example.destinyapp.ui.screens.register.RegisterScreen
 import com.example.destinyapp.ui.screens.welcome.WelcomeScreen
+import com.example.destinyapp.ui.theme.DestinyAppTheme
 
 sealed class Screen(
     val route: String,
@@ -105,12 +108,16 @@ fun DestinyNavHost() {
             if (currentRoute in mainScreens) {
                 DestinyBottomBar(navController)
             }
-        }
+        },
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         NavHost(
             navController = navController,
             startDestination = Screen.Welcome.route,
-            modifier = Modifier.padding(padding),
+            modifier = Modifier.padding(
+                top = padding.calculateTopPadding(),
+                bottom = 0.dp // Permite que el contenido se vea por detrás de la barra flotante
+            ),
             enterTransition = {
                 slideIntoContainer(
                     towards = getSlideDirection(initialState, targetState),
@@ -200,5 +207,13 @@ fun PlaceholderScreen(text: String) {
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onBackground
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DestinyNavHostPreview() {
+    DestinyAppTheme {
+        DestinyNavHost()
     }
 }
